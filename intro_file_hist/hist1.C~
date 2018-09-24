@@ -1,0 +1,13 @@
+//first histogram root macro
+
+{
+  h1 = new TH1D("h", "first histogram", 50, 0, 50);
+
+  //basic fill of h with a random number.
+  for(int i = 0; i < 50; i++){
+    h->Fill(gRandom->Uniform(0,50));
+  }
+  
+  h1->Draw();
+
+}
