@@ -1,0 +1,56 @@
+* formating: 
+** Data and name of the run
+*** Different channels or categories of the data
+**** notes about each data structure in the channels
+
+
+
+* TranLoc Data
+** 2018_12_13 forward and reverse data of the Sr90
+*** Channel selections (channels are measured as on the DRS)
+**** Channel 1 
+     pin   21
+     pixel 28
+     Side 1
+     Front pixel on normal run
+**** Channel 2
+     Pin 41
+     pixel 36
+     Side 2
+     Front Pixel on "reverse" run
+**** Channel 3
+     pin 31
+     pixel 27
+     Side 1
+     Front pixel on normal run
+**** Channel 4
+     pin 45 
+     Pixel 35
+     Side 2
+     Front pixel on "reverse" run
+** 2018_12_18 cs137 energy scan
+*** Channel selections (channels are measured as on the DRS)
+**** Channel 1 
+     pin   21
+     pixel 28
+     Side 1
+     Front pixel 
+**** Channel 2
+     Pin 41
+     pixel 36
+     Side 2
+**** Channel 3
+     pin 31
+     pixel 27
+     Side 1
+     Front pixel 
+**** Channel 4
+     pin 45 
+     Pixel 35
+     Side 2
+*** side notes: 
+    have the letters facing "down" towards the tranloc, so that if standing on the tranloc you could read the yellow side of cs137
+    trigger type : all four ors
+    trigger level: 0.06
+    file name: ~/ntc-data/2018_12_18_Cs137_tranloc_Ch1234_OR.txt
+

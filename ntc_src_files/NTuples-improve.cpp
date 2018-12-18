@@ -119,7 +119,7 @@ cout<<filesList<<endl;
  //==============================================================
  //loop to associate bin_width with time calibration file
 
- ifstream FILE1("2018_08_27_time_calibration.txt",ios::in);
+ ifstream FILE1("2018_10_31_dt_calib.txt",ios::in);
  int aux=0;
  while (FILE1>>indexTime>>dt_ch0>>dt_ch1>>dt_ch2>>dt_ch3){
      bin_width[0][aux]=dt_ch0;
