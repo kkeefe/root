@@ -3,5 +3,6 @@
 *.dSYM
 #ignore the data types in these files. this directory tree is only for analysis files..
 *.txt
+!2018_10_31_dt_calib.txt
 *.dat
 *.root

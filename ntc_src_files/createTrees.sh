@@ -1,6 +1,9 @@
  #!/bin/bash
 
 # go the directory where the ntc data text files are stored..
+
+echo "make sure you performed make on your new files.."
+
 cd ~/Documents/ntc_data_files/
 
 fileName=""
@@ -22,7 +25,7 @@ echo $fileName
 
 cp $rootName ~/Documents/ntc_data_files/Tool4Analysis-wTime/rootFiles
 cd ~/Documents/ntc_data_files/Tool4Analysis-wTime
-git 
+
 echo "Done for $rootName"
 done
 echo "Good look!!!"
