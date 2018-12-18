@@ -27,25 +27,25 @@ void createtree( char* infilename, char* outfilename ) {
   ifstream infile;
   infile.open(infilename);
 
-//*******Creating the name of each variable**************
- std::vector<std::string> var_names;
- var_names.push_back("EventNumber");
- var_names.push_back("boardId");
- var_names.push_back("channel");
- var_names.push_back("GetTriggerCell");
- var_names.push_back("motorPosition");
- var_names.push_back("Ref");
- var_names.push_back("GetTemperature");
-for(int i = 7 ; i < 1031; i++){ 
- var_names.push_back("signal"+int_to_string(i));
-}
+  //*******Creating the name of each variable**************
+  std::vector<std::string> var_names;
+  var_names.push_back("EventNumber");
+  var_names.push_back("boardId");
+  var_names.push_back("channel");
+  var_names.push_back("GetTriggerCell");
+  var_names.push_back("motorPosition");
+  var_names.push_back("Ref");
+  var_names.push_back("GetTemperature");
+  for(int i = 7 ; i < 1031; i++){ 
+    var_names.push_back("signal"+int_to_string(i));
+  }
 
-//print var_names:
-//for(unsigned int i = 0; i < var_names.size(); i++) {
-//    cout << var_names[i] << endl;
-//}
+  //print var_names:
+  //for(unsigned int i = 0; i < var_names.size(); i++) {
+  //    cout << var_names[i] << endl;
+  //}
 
-//*******************************************************
+  //*******************************************************
 
 
   // declare vector to contain floating point variables and initialize to zero
@@ -56,13 +56,13 @@ for(int i = 7 ; i < 1031; i++){
   TTree *tree = new TTree("T",infilename);
 
   // create tree branches 
-//  for ( unsigned int i=0; i<var_names.size(); ++i ) {
-//    std::string format = var_names[i]+"/F";
-//    tree->Branch(var_names[i].c_str(),&(variables[i]),format.c_str());
-//  }
+  //  for ( unsigned int i=0; i<var_names.size(); ++i ) {
+  //    std::string format = var_names[i]+"/F";
+  //    tree->Branch(var_names[i].c_str(),&(variables[i]),format.c_str());
+  //  }
 
 
- //Create branches for the headers
+  //Create branches for the headers
   for ( unsigned int i=0; i<7; i++ ) {
     std::string format = var_names[i]+"/F";
     tree->Branch(var_names[i].c_str(),&(variables[i]),format.c_str());
@@ -76,27 +76,27 @@ for(int i = 7 ; i < 1031; i++){
 
   // fill the tree from the values in ASCII file 
   unsigned int i=0;
-//  unsigned int k=0;
+  //  unsigned int k=0;
   while ( !infile.eof() ) {
     infile >> variables[i];
     i++;
-//    std::cout<<variables[i]<<" i:"<<i<<"  k:"<<k<<" Outside the if sentence"<<std::endl;
+    //    std::cout<<variables[i]<<" i:"<<i<<"  k:"<<k<<" Outside the if sentence"<<std::endl;
 
-//     if ((i>6) && (i< var_names.size()) && (k>0)){
-//	std::cout<<variables[i]<<" i:"<<i<<"  k:"<<k<<std::endl;
-//        vpx.push_back(variables[i]);}
+    //     if ((i>6) && (i< var_names.size()) && (k>0)){
+    //	std::cout<<variables[i]<<" i:"<<i<<"  k:"<<k<<std::endl;
+    //        vpx.push_back(variables[i]);}
     
 
 
     // reset i and write variables to tree
     if ( i == var_names.size() ) {
-            for ( unsigned int k=7; k<var_names.size(); ++k){
-//                  std::cout<<var_names[k]<<"="<<variables[k]<<std::endl;
-                  vpx.push_back(variables[k]);
-                }
-//            for ( unsigned int j=0; j<var_names.size(); ++j ) std::cout << var_names[j] << "=" << variables[j] << " ";
-//            std::cout << std::endl;
-//      k++;
+      for ( unsigned int k=7; k<var_names.size(); ++k){
+	//                  std::cout<<var_names[k]<<"="<<variables[k]<<std::endl;
+	vpx.push_back(variables[k]);
+      }
+      //            for ( unsigned int j=0; j<var_names.size(); ++j ) std::cout << var_names[j] << "=" << variables[j] << " ";
+      //            std::cout << std::endl;
+      //      k++;
       tree->Fill();
       vpx.clear();
       i=0;
