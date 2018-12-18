@@ -1,2 +1,3 @@
 # ignore new temp files created by emacs
 *~
+*.dSYM
