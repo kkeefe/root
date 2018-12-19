@@ -15,7 +15,6 @@ rootName=${fileName%.*}
 rootName=$rootName.root
 
 echo "creating temporal root file wich contains the data...."
-pwd
 ~/Documents/root/ntc_src_files/createTreeData $fileName $rootName
 
 fileName="${fileName##*/}"

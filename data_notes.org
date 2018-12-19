@@ -53,4 +53,5 @@
     trigger type : all four ors
     trigger level: 0.06
     file name: ~/ntc-data/2018_12_18_Cs137_tranloc_Ch1234_OR.txt
-
+    absolutely huge initial data file on the first run ~20 GB
+    consider running another time with a different trigger and to reduce the counts?
