@@ -1,9 +1,15 @@
  #!/bin/bash
 
 # go the directory where the ntc data text files are stored..
+
+echo "make sure you performed make on your new files.."
+
 cd ~/Documents/ntc_data_files/
 
+<<<<<<< HEAD
 make
+=======
+>>>>>>> 7567f1de3aa2847070e23f493fe06c18cf6f0617
 fileName=""
 for fileName in  2018_12_13_Sr90_tranloc_ch1_2_3_4_OR.txt 2018_12_13_Sr90_Tranloc_abridged_reverse_Ch1_2_3_4_OR.txt;
 
