@@ -7,3 +7,4 @@
 *.dat
 *.root
 *.png
+!Root_Color_Pallet.png
