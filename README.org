@@ -1,5 +1,32 @@
 * Root files - store examples of root files which do various things
 ** Root histograms
+*** Here are some examples of filling root histograms
+**** hist 1
+     utilizes a random fill of numbers.
+     two different histograms are presented with different binning
+**** hist 2
+     an example of three histograms to compare random dice tosses
+     the third histogram displays the frequency of the sum of the previous two dices
+**** hist 3
+     this is very similar to histogram 2, except at the end it spits out data onto the io stream and shows the entry #'s and counts
+**** hist 4
+     still open with current work to be done..
+
 ** Root graphs
+*** Examples of root graphs. 
+    Some examples of 1-D and N-D graphs are shown..
+    Most common types unique to graphs:
+    TF1 (or TFN) which describes the number of variables of a function..
+    TCanvas - allows for multiple graphs to be placed on 
+**** C1
+     this is an example of a macro generated form the root canvas interface..
+**** GraphTest.C
+     first example of a self generated 1-D graph. 
+     Very simple single graph template..
+**** formula1.C
+     this is an example using TCanvas to plot and display 3 different types of graphs..
+     the third graph is a type TF2 which is a 2-variable function and plotted as such..
+
+
 ** Root functions
 ** NTC specific root files and shell scrips
