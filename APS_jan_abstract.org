@@ -1,5 +1,5 @@
 * Title:
-Particle Detectors and Anderson Localization: A "guide" to improving particle detection in scintillators
+  Particle Detectors and Anderson Localization: A "guide" to improving particle detection in scintillators
 
 * Author list:
 Kevin Keefe
