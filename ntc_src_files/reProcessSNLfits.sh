@@ -29,146 +29,146 @@ fileName=""
 for fileName in "${EJ200[@]}" "${EJ200Teflon[@]}" "${EJ200ESR[@]}" "${EJ204[@]}" "${EJ204Teflon[@]}" "${EJ204ESR[@]}" "${EJ230[@]}"  "${EJ230Teflon[@]}"  "${EJ230ESR[@]}";
 do
 
-#"${EJ200Teflon[@]}" "${EJ204Teflon[@]}"; do
+    #"${EJ200Teflon[@]}" "${EJ204Teflon[@]}"; do
 
-#"${EJ276[@]}" "${EJ276Teflon[@]}"  "${EJ204[@]}"  "${EJ276ESR[@]}"; do
-# "${EJ204[@]}"  "${EJ200[@]}"    "${EJ204Teflon[@]}"     "${EJ204ESR[@]}" "${EJ230ESR[@]}" "${EJ230Teflon[@]}""${EJ200Teflon[@]}" "${EJ200ESR[@]}""${EJ204[@]}"; do
-
-
-#
-# "${EJ276Teflon[@]}" "${EJ276[@]}" 
- 
-FINDME=$fileName
-FOUND1=`echo ${EJ200[*]} | grep "$FINDME"`
-if [ "${FOUND1}" != "" ]; then
-  echo Array contains: $FINDME
-a=0.0101034
-#a=40.28
-b=0.0152201
-fi
-
-FOUND2=`echo ${EJ204[*]} | grep "$FINDME"`
-if [ "${FOUND2}" != "" ]; then
-  echo Array contains: $FINDME
-a=0.00877591
-b=-0.0135142
-fi
-
-FOUND3=`echo ${EJ230[*]} | grep "$FINDME"`
-if [ "${FOUND3}" != "" ]; then
-  echo Array contains: $FINDME
-a=0.0104311
-b=0.0136448
-fi
-
-FOUND4=`echo ${EJ276[*]} | grep "$FINDME"`
-if [ "${FOUND4}" != "" ]; then
-  echo Array contains: $FINDME
-fi
-
-FOUND11=`echo ${EJ200Teflon[*]} | grep "$FINDME"`
-if [ "${FOUND11}" != "" ]; then
-  echo Array contains: $FINDME
-a=0.0111456
-b=-0.00374667
-fi
-
-FOUND21=`echo ${EJ204Teflon[*]} | grep "$FINDME"`
-if [ "${FOUND21}" != "" ]; then
-  echo Array contains: $FINDME
-a=0.00915007
-b=0.00715449
-fi
-
-FOUND31=`echo ${EJ230Teflon[*]} | grep "$FINDME"`
-if [ "${FOUND31}" != "" ]; then
-  echo Array contains: $FINDME
-a=0.0117096
-b=0.0265059
-fi
-
-FOUND41=`echo ${EJ276Teflon[*]} | grep "$FINDME"`
-if [ "${FOUND41}" != "" ]; then
-  echo Array contains: $FINDME
-fi
-
-FOUND12=`echo ${EJ200ESR[*]} | grep "$FINDME"`
-if [ "${FOUND12}" != "" ]; then
-  echo Array contains: $FINDME
-a=0.00731252
-b=0.00741033
-fi
-
-FOUND22=`echo ${EJ204ESR[*]} | grep "$FINDME"`
-if [ "${FOUND22}" != "" ]; then
-  echo Array contains: $FINDME
-a=0.00624948
-b=0.00610325
-fi
-
-FOUND32=`echo ${EJ230ESR[*]} | grep "$FINDME"`
-if [ "${FOUND32}" != "" ]; then
-  echo Array contains: $FINDME
-a=0.0085709
-b=0.0101548
-fi
-
-FOUND42=`echo ${EJ276ESR[*]} | grep "$FINDME"`
-if [ "${FOUND42}" != "" ]; then
-  echo Array contains: $FINDME
-a=0.0112494
-b=-0.0399353
-fi
+    #"${EJ276[@]}" "${EJ276Teflon[@]}"  "${EJ204[@]}"  "${EJ276ESR[@]}"; do
+    # "${EJ204[@]}"  "${EJ200[@]}"    "${EJ204Teflon[@]}"     "${EJ204ESR[@]}" "${EJ230ESR[@]}" "${EJ230Teflon[@]}""${EJ200Teflon[@]}" "${EJ200ESR[@]}""${EJ204[@]}"; do
 
 
-rootName="${fileName##*/}"
-rootName=${fileName%.*}
-rootName=$rootName.root
+    #
+    # "${EJ276Teflon[@]}" "${EJ276[@]}" 
+    
+    FINDME=$fileName
+    FOUND1=`echo ${EJ200[*]} | grep "$FINDME"`
+    if [ "${FOUND1}" != "" ]; then
+	echo Array contains: $FINDME
+	a=0.0101034
+	#a=40.28
+	b=0.0152201
+    fi
 
-fileName="${fileName##*/}"
-fileName=${fileName%.*}
-echo $fileName
+    FOUND2=`echo ${EJ204[*]} | grep "$FINDME"`
+    if [ "${FOUND2}" != "" ]; then
+	echo Array contains: $FINDME
+	a=0.00877591
+	b=-0.0135142
+    fi
 
-Folder="Folder$fileName"
-echo "Creating $Folder"
+    FOUND3=`echo ${EJ230[*]} | grep "$FINDME"`
+    if [ "${FOUND3}" != "" ]; then
+	echo Array contains: $FINDME
+	a=0.0104311
+	b=0.0136448
+    fi
 
-cd /home/kevinkeefe/Documents/ntc_data/Tool4Analysis-wTime/rootFiles
-cp $rootName /home/kevinkeefe/Documents/ntc_data/Tool4AnalysisCutted
-cd /home/kevinkeefe/Documents/ntc_data/Tool4AnalysisCutted
+    FOUND4=`echo ${EJ276[*]} | grep "$FINDME"`
+    if [ "${FOUND4}" != "" ]; then
+	echo Array contains: $FINDME
+    fi
+
+    FOUND11=`echo ${EJ200Teflon[*]} | grep "$FINDME"`
+    if [ "${FOUND11}" != "" ]; then
+	echo Array contains: $FINDME
+	a=0.0111456
+	b=-0.00374667
+    fi
+
+    FOUND21=`echo ${EJ204Teflon[*]} | grep "$FINDME"`
+    if [ "${FOUND21}" != "" ]; then
+	echo Array contains: $FINDME
+	a=0.00915007
+	b=0.00715449
+    fi
+
+    FOUND31=`echo ${EJ230Teflon[*]} | grep "$FINDME"`
+    if [ "${FOUND31}" != "" ]; then
+	echo Array contains: $FINDME
+	a=0.0117096
+	b=0.0265059
+    fi
+
+    FOUND41=`echo ${EJ276Teflon[*]} | grep "$FINDME"`
+    if [ "${FOUND41}" != "" ]; then
+	echo Array contains: $FINDME
+    fi
+
+    FOUND12=`echo ${EJ200ESR[*]} | grep "$FINDME"`
+    if [ "${FOUND12}" != "" ]; then
+	echo Array contains: $FINDME
+	a=0.00731252
+	b=0.00741033
+    fi
+
+    FOUND22=`echo ${EJ204ESR[*]} | grep "$FINDME"`
+    if [ "${FOUND22}" != "" ]; then
+	echo Array contains: $FINDME
+	a=0.00624948
+	b=0.00610325
+    fi
+
+    FOUND32=`echo ${EJ230ESR[*]} | grep "$FINDME"`
+    if [ "${FOUND32}" != "" ]; then
+	echo Array contains: $FINDME
+	a=0.0085709
+	b=0.0101548
+    fi
+
+    FOUND42=`echo ${EJ276ESR[*]} | grep "$FINDME"`
+    if [ "${FOUND42}" != "" ]; then
+	echo Array contains: $FINDME
+	a=0.0112494
+	b=-0.0399353
+    fi
 
 
-mkdir $Folder
-mkdir plots
+    rootName="${fileName##*/}"
+    rootName=${fileName%.*}
+    rootName=$rootName.root
 
-rm -rf $Folder/plots
+    fileName="${fileName##*/}"
+    fileName=${fileName%.*}
+    echo $fileName
 
-./NTuples-improveCuttedSNLnumbers $rootName tempNtuple.root $a $b
+    Folder="Folder$fileName"
+    echo "Creating $Folder"
 
-rm $rootName
+    cd /home/kevinkeefe/Documents/ntc_data/Tool4Analysis-wTime/rootFiles
+    cp $rootName /home/kevinkeefe/Documents/ntc_data/Tool4AnalysisCutted
+    cd /home/kevinkeefe/Documents/ntc_data/Tool4AnalysisCutted
 
-echo "Generating histograms..."
-root -b -q HDAuto.c 
+
+    mkdir $Folder
+    mkdir plots
+
+    rm -rf $Folder/plots
+
+    ./NTuples-improveCuttedSNLnumbers $rootName tempNtuple.root $a $b
+
+    rm $rootName
+
+    echo "Generating histograms..."
+    root -b -q HDAuto.c 
 
 
-mv plots $Folder
-mv *.dat $Folder
-mv *.png $Folder
+    mv plots $Folder
+    mv *.dat $Folder
+    mv *.png $Folder
 
-mv tempNtuple.root $Folder
-#rm tempNtuple.root
+    mv tempNtuple.root $Folder
+    #rm tempNtuple.root
 
-cp allFinalCurves1.c $Folder
-cd $Folder
-root -b -q allFinalCurves1.c
-cd /home/kevinkeefe/Documents/ntc_data/Tool4AnalysisCutted
-rm -rf plots 
+    cp allFinalCurves1.c $Folder
+    cd $Folder
+    root -b -q allFinalCurves1.c
+    cd /home/kevinkeefe/Documents/ntc_data/Tool4AnalysisCutted
+    rm -rf plots 
 
-echo "Compressing the output file..."
-tar -cvf $Folder.tar.gz $Folder --exclude=$Folder/*.dat --exclude=plots --exclude=*.c --exclude=*.root --exclude=*.pdf
+    echo "Compressing the output file..."
+    tar -cvf $Folder.tar.gz $Folder --exclude=$Folder/*.dat --exclude=plots --exclude=*.c --exclude=*.root --exclude=*.pdf
 
-mv $Folder.tar.gz /home/kevinkeefe/Documents/ntc_data/Tool4AnalysisCutted/Temporalfolder
-#mv $Folder $filePath/
-#mv $Folder.tar.gz $filePath/
+    mv $Folder.tar.gz /home/kevinkeefe/Documents/ntc_data/Tool4AnalysisCutted/Temporalfolder
+    #mv $Folder $filePath/
+    #mv $Folder.tar.gz $filePath/
 
 done
 

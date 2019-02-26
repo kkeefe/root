@@ -1,10 +1,5 @@
 #!/bin/bash
 
-
-
-
-
-
 #basic introduction to how to define and use sinmple arithmatic operations in bash..
 # let examples
 a=5
