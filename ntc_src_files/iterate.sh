@@ -2,7 +2,7 @@
 
 # this fills filename with the file names with each of the file types ending in the listed postfixes.
 # variable filling and declaration
-filename=$(ls *.cpp *.c *.sh)
+filename=$(ls *Angle*.root)
 echo $filename
 
 # #note that this has the same output as filename.. thus, filling it as above creates a single element array
@@ -44,17 +44,20 @@ echo $filename
 for i in $filename
 do
     case "$i" in
-	*".sh")
-	    echo "shell file:  $i"
-	    ;;
-	*".cpp")
-	    echo "cpp file:    $i"
-	    ;;
-	*".c")
-	    echo "C root file: $i "
+	*".root")
+	    echo "root file: $i"
+	    root -b -l -q $i Analysis.C
+	    mv ntup.png ./png_files/$i.png 
 	    ;;
     esac
 done
+
+# move some stuff to the desktop that you just created..
+
+cp ./png_files/*.png /mnt/c/Users/kkeefe/Desktop/pngfile/
+
+
+
 
 # #the while statement
 # #observe that let is required to indicate that this is a arithmatic variable..
