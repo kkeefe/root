@@ -3,7 +3,7 @@
   //declare the variables you will read from;
   int x, y;
   TNtuple ntup("first", "title", "X:Y");
-  c1 = new TCanvas("c1", "ntuples", 1500, 500);
+  TCanvas *c1 = new TCanvas("c1", "ntuples", 1500, 500);
   c1->Divide(3,1);
   
   for(int i = 0; i < 10; ++i){

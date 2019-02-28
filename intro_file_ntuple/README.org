@@ -1,0 +1,50 @@
+
+General website users guide if you get completely lost..
+https://root.cern.ch/root/htmldoc/guides/users-guide/ROOTUsersGuide.html
+* notes for TNuples
+* generial I/O
+  https://root.cern.ch/input-and-output
+** creating a new file:
+   TFile *MyFile = new TFile("Event.root","NEW");
+** reading and writing entire objects
+   if TClass:
+   MyObject->Write("MyObject_1");
+   
+   Otherwise,
+   gDirectory->WriteObject(MyObject,"MyObject_1");
+   gDirectory->GetObject("MyObject_1",MyObject);
+
+* Trees in 5 steps
+** 1) crete a TFile object
+   TFile *hfile = new TFile("AFile.root","RECREATE","Example");
+
+The creation options are:
+
+NEW or CREATE create a new file and open it for writing, if the file already exists the file is not opened.
+RECREATE create a new file, if the file already exists it will be overwritten.
+UPDATE open an existing file for writing. if no file exists, it is created.
+READ open an existing file for reading.
+
+** 2) create a TTree object
+   TTree *tree = new TTree("myTree","A ROOT tree");
+   One can also create a Tree with Folders:
+
+TTree aliTree("aliTree", "/aliroot")
+First Parameter: tree name
+Second Parameter: /name of the top folder
+
+** 3) adding a branch to the tree
+   Event *event = new  Event();
+myTree->Branch("EventBranch", "Event", &event);
+Adding branches with a list of variables is done with the Branch() method which has the following parameters:
+
+TBranch *b = tree->Branch ("Ev_Branch",&event, "ntrack/I:nseg:nvtex:flag/i:temp/F");
+
+** 4) filling the tree
+   myTree->Fill()
+** 5) write the tree
+   hfile->Write();
+
+   
+** 5.1) reading a TTree
+   https://root.cern.ch/how/how-read-tree

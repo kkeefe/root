@@ -10,7 +10,7 @@ CXXFLAGS   += $(ROOTCFLAGS)
 LIBS        = $(ROOTLIBS) $(SYSLIBS)
 
 ### Targets
-TARGS = createTreeData NTuples-improve NTuples-improveCutted 
+TARGS = createTreeData NTuples-improve NTuples-improveCutted triple_fit.C
 
 all: $(TARGS)
 
