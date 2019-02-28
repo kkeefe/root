@@ -63,7 +63,6 @@ gROOT->ProcessLine("#include <vector>");
 // string filesList = "./" + nombre
 cout<<filesList<<endl;
 
-
  TObjArray Hlist(0);
 
 //Histograms
