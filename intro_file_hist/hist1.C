@@ -11,7 +11,7 @@
 
   //make sure that the drawing is happening on the correct canvas
   c1->cd(1);
-  h1 = new TH1D("h1", "first histogram", 50, 0, 50);
+  h1 = new TH1D("h1", "50 bin fit hist", 50, 0, 50);
 
   //basic fill of h1 with a random number.
   for(int i = 0; i < 5000; i++){
@@ -28,7 +28,7 @@
   c1->cd(2);
 
   //double the bins of the second histogram to compare
-  h2 = new TH1D("h2","Second histogram", 100, 0, 50);
+  h2 = new TH1D("h2","100 bin fit hist", 100, 0, 50);
   //basic fill of h1 with a random number.
   for(int i = 0; i < 5000; i++){
     h2->Fill(gRandom->Gaus(25,10));

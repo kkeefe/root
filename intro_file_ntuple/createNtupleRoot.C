@@ -21,5 +21,5 @@
   //write the ntuple and close the file
   ntup->Write();
   TCanvas *c1 = new TCanvas("c1", "ntuples", 700, 600);
-  ntup->Draw("X_values:Y_values");  
+  /* ntup->Draw("X_values:Y_values");   */
 }
