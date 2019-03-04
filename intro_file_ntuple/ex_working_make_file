@@ -10,7 +10,7 @@ CXXFLAGS   += $(ROOTCFLAGS)
 LIBS        = $(ROOTLIBS) $(SYSLIBS)
 
 ### Targets
-TARGS = trip_fit_main
+TARGS = createTreeData NTuples-improve NTuples-improveCutted triple_fit.C
 
 all: $(TARGS)
 
@@ -22,4 +22,3 @@ all: $(TARGS)
 
 rmproper:
 	rm -vf $(TARGS)
-
