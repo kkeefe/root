@@ -1,3 +1,5 @@
+
+// note that this program is meant to be used exclusively as a root macro
 {
 
   //make sure that you keep only one version of the f1 uncommented..

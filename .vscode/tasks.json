@@ -1,0 +1,25 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build basic.cpp",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-g",
+                "-Wall",
+                "--std=c++14",
+                "basic.cpp",
+                "-o",
+                "basic"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher":"$gcc"
+        }
+    ]
+}
+
+// i want to see if this follows the other build task that i've set for a different workspace`

@@ -27,7 +27,7 @@
 
 using namespace std;
 
-void triple_fit (TH1* hist_1) {
+void triple_fit () {
 
   double g1_temp_par1, g1_temp_par2, g1_temp_par3;
   double g2_temp_par1, g2_temp_par2, g2_temp_par3;
@@ -55,7 +55,6 @@ void triple_fit (TH1* hist_1) {
   fGauss_3 -> SetLineColor(6);
   hist_1 -> Fit("fGauss_3","R","",mean_tmp-2*sigma_tmp,mean_tmp-2*sigma_tmp);
 
-  
   mean = fGauss_3->GetParameter(1);
   sigma = fGauss_3->GetParameter(2);
   mean_Error = fGauss_3->GetParError(1);
