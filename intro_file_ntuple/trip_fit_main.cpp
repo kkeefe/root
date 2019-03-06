@@ -29,7 +29,6 @@ void StandAlone(int argc, char** argv){
   std::cin >> input1 >> input2;
   // example_macro(); //feel free to include and run additional macros on your graph here..
   input2 = input1 + ":" + input2;
-  std::cout << input2 << " is the value you entered .. \n";
   tree->Draw(input2.c_str());
   //example_macro();
 }
