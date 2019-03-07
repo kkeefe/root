@@ -1,33 +1,12 @@
-#include <stdio.h>
-#include <iostream>
-#include "TTree.h"
-#include "TNtuple.h"
-#include "TFile.h"
-#include <TROOT.h>
-#include "TH1F.h"
-#include "TF1.h"
-#include "TApplication.h"
-#include ""
-#ifndef __GRAPH_ERRORS__
-#define __GRAPH_ERRORS__
-#endif
-
-//using namespace std;
-
+#include "trip_fit_main.hh"
 
 //make sure that you pass this function the correct root value? 
 
 // tree name, ntuple name
 
-void example_macro(){
-  printf("hi there..\n");
-}
-
 void StandAlone(int argc, char** argv){
   TFile *file = new TFile(argv[1]);  
   TTree *tree = (TTree*)file->Get(argv[2]);
-
-  test_print();
 
   // print out the values of the tree so you know what the individual values of the tree are./
   std::string input1, input2;   
@@ -42,6 +21,9 @@ void StandAlone(int argc, char** argv){
 
 int main(int argc, char** argv){
  
+ //test_print();  
+  example_macro();
+
   if(argc != 3){
     printf("need 2 additional arguments to print:\n");
     printf("please supply the following: \"TFile_name\", \"TTree_name\" \n");

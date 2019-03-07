@@ -1,5 +1,4 @@
-{
-
+void ntuple(){
   //declare the variables you will read from;
   int x, y;
   TNtuple ntup("first", "title", "X:Y");
@@ -11,8 +10,6 @@
     y = i*i;
     ntup.Fill(x,y);
   }
-  
-
   //write the ntuple and close the file
   ntup.Write();
 

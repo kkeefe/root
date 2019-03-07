@@ -6,6 +6,10 @@
 3) x_axis title
 4) y_axis title
  */
+void example_macro(){
+  printf("hi there..\n");
+}
+
 void graph_errors(const char *dat_title, const char *x_axis, const char *y_axis){
 
   //  cout << param << endl;
