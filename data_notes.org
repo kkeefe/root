@@ -1,3 +1,5 @@
+#+STARTUP: showall
+
 * formating: 
 ** Data and name of the run
 *** Different channels or categories of the data
