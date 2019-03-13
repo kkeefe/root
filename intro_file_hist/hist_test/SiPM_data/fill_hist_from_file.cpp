@@ -45,6 +45,7 @@ void iterate_fit(TGraph *tg, double_t x_min, double_t x_max, int num_fits, TGrap
     double_t width = (x_max - x_min) / num_fits;
     //previous parameters to guess for fits (avoid explosive fits)
     double_t prev_p0, prev_p1, prev_p2, prev_p3;
+    //printf("avg_slope\tmid_slope\tthresh_mid\n");
     for (int i = 0; i < num_fits; ++i)
     {
         // set the min and max values for this iteration..
@@ -111,11 +112,10 @@ void fill_hist_from_file(const char *file)
 
     TCanvas *c1 = new TCanvas("c1", "Canvas name", 1400, 600);
     gStyle->SetOptStat(1111111); // draws statistics on the plots
-    gStyle->SetOptFit(1);     //includes a fit on the graph
+    gStyle->SetOptFit(1111);     //includes a fit on the graph
     gStyle->SetPalette(57);
     c1->Divide(2, 1);
     c1->cd(1);
-    c1->GetPad(1)->SetLogy();
     construct_graph(g1, "graph_1", "threshold", "Scalar_counts", 2900, 3600);
     g1->Draw("ABQ");
 
@@ -123,7 +123,7 @@ void fill_hist_from_file(const char *file)
     construct_graph(tg_diff, "graph_2", "threshold", "Difference", 2900, 3600);
     tg_diff->Draw();
 
-    //create the file name you want, and of course root doesn't mak it easy..
+
     TString file_string = file;
     int size = file_string.Sizeof();
     file_string.Remove(size - 5, 4);
