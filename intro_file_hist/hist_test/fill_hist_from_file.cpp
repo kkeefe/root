@@ -53,6 +53,20 @@ pair<double_t, double_t> find_max(vector<pair<double_t, double_t>> xy_points){
     return make_pair(x_point, max_y);
 }
 
+pair<double_t, double_t> find_min(vector<pair<double_t, double_t>> xy_points){
+
+    double_t min_y(0);
+    double_t x_point(0);
+
+    for(auto c : xy_points){
+        if (c.second <  min_y or min_y == 0) {
+            min_y = c.second;
+            x_point = c.first;
+        }
+    }
+    return make_pair(x_point, min_y);
+}
+
 //this determines what information you get from each individual fit from iterate fits..
 pair<double_t, double_t> residual_fits(TGraph *tg, TF1 *fit, double_t x_min, double_t x_max, TGraph *tg_out, int *point)
 {
@@ -121,12 +135,12 @@ pair<double_t,double_t> iterate_fit(TGraph *tg, double_t x_min, double_t x_max, 
         prev_p0 = my_func->GetParameter("Constant");
         prev_p1 = my_func->GetParameter("Slope");
     }
-    
+    //can choose min or max value..
     pair<double_t, double_t> max_diff = find_max(thresholds_xy);
     return max_diff;
 }
 
-void fill_hist_from_file(const char *file)\. q                          1
+void fill_hist_from_file(const char *file){     
     TFile *f = new TFile(file);
     TNtuple *ntup1 = (TNtuple *)f->Get("ntup1");
 
@@ -171,7 +185,7 @@ void fill_hist_from_file(const char *file)\. q                          1
     TGraph *tg_diff = new TGraph();
     pair<Double_t, double_t> threshold_xy;
 
-    threshold_xy = iterate_fit(g1, 2900, 3600, 24, tg_diff, &point2);
+    threshold_xy = iterate_fit(g1, 2900, 3600, 16, tg_diff, &point2);
 
     TCanvas *c1 = new TCanvas("c1", "Canvas name", 2100, 600);
     gStyle->SetOptStat(1111111); // draws statistics on the plots
@@ -185,6 +199,18 @@ void fill_hist_from_file(const char *file)\. q                          1
     c1->GetPad(1)->SetLogy();
     construct_graph(g1, "graph_1", "threshold", "Scalar_counts", 2900, 3700);
     g1->Draw("ABQ");
+    
+    TLine *tl = new TLine();
+    tl->SetLineColor(kRed);
+    tl->SetLineWidth(2);
+    tl->SetLineStyle(9);
+    tl->DrawLine(threshold_xy.first, g1->GetMinimum(), threshold_xy.first, g1->GetMaximum());
+    
+    TLine *tl2 = new TLine();
+    tl2->SetLineColor(kGreen);
+    tl2->SetLineWidth(2);
+    tl2->SetLineStyle(8);
+    tl2->DrawLine((find_max(max_thresh_slope).first), g1->GetMinimum(), (find_max(max_thresh_slope).first), g1->GetMaximum());
 
     c1->cd(2);
     construct_graph_min(tg_diff, "graph_2", "threshold", "Difference", 2900, 3700);
@@ -195,6 +221,7 @@ void fill_hist_from_file(const char *file)\. q                          1
     TPaveText *labeB = new TPaveText(0.45, 0.70, 0.75, 0.79, "brNDC");
     labeA->AddText(make_constChar(threshold_xy.second));
     labeA->Draw();
+    tl->DrawLine(threshold_xy.first, tg_diff->GetMinimum(), threshold_xy.first, tg_diff->GetMaximum());
 
     c1->cd(3);
     //c1->GetPad(3)->SetLogy();
@@ -206,6 +233,8 @@ void fill_hist_from_file(const char *file)\. q                          1
     TPaveText *labeD = new TPaveText(0.4, 0.80, 0.65, 0.89, "brNDC");
     labeD->AddText(make_constChar((find_max(max_thresh_slope).second)));
     labeD->Draw();
+    tl2->DrawLine((find_max(max_thresh_slope).first), g2->GetMinimum(), (find_max(max_thresh_slope).first), g2->GetMaximum());
+
     // TPaveText *labeB = new TPaveText(0.15, 0.70, 0.4, 0.79, "brNDC");
     // labeB->AddText("Point-slope diff..");
     // labeB->Draw();

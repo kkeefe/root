@@ -53,6 +53,20 @@ pair<double_t, double_t> find_max(vector<pair<double_t, double_t>> xy_points){
     return make_pair(x_point, max_y);
 }
 
+pair<double_t, double_t> find_min(vector<pair<double_t, double_t>> xy_points){
+
+    double_t min_y(0);
+    double_t x_point(0);
+
+    for(auto c : xy_points){
+        if (c.second <  min_y or min_y == 0) {
+            min_y = c.second;
+            x_point = c.first;
+        }
+    }
+    return make_pair(x_point, min_y);
+}
+
 //this determines what information you get from each individual fit from iterate fits..
 pair<double_t, double_t> residual_fits(TGraph *tg, TF1 *fit, double_t x_min, double_t x_max, TGraph *tg_out, int *point)
 {
@@ -80,7 +94,7 @@ pair<double_t, double_t> residual_fits(TGraph *tg, TF1 *fit, double_t x_min, dou
             }
         }
     }
-    pair<double_t, double_t> max_diff = find_max(exceed_thresh);
+    pair<double_t, double_t> max_diff = find_min(exceed_thresh);
     return max_diff;
 }
 
@@ -126,8 +140,7 @@ pair<double_t,double_t> iterate_fit(TGraph *tg, double_t x_min, double_t x_max, 
     return max_diff;
 }
 
-void fill_hist_from_file(const char *file)
-{
+void fill_hist_from_file(const char *file){     
     TFile *f = new TFile(file);
     TNtuple *ntup1 = (TNtuple *)f->Get("ntup1");
 
@@ -186,6 +199,18 @@ void fill_hist_from_file(const char *file)
     c1->GetPad(1)->SetLogy();
     construct_graph(g1, "graph_1", "threshold", "Scalar_counts", 2900, 3700);
     g1->Draw("ABQ");
+    
+    TLine *tl = new TLine();
+    tl->SetLineColor(kRed);
+    tl->SetLineWidth(2);
+    tl->SetLineStyle(9);
+    tl->DrawLine(threshold_xy.first, g1->GetMinimum(), threshold_xy.first, g1->GetMaximum());
+    
+    TLine *tl2 = new TLine();
+    tl2->SetLineColor(kGreen);
+    tl2->SetLineWidth(2);
+    tl2->SetLineStyle(8);
+    tl2->DrawLine((find_max(max_thresh_slope).first), g1->GetMinimum(), (find_max(max_thresh_slope).first), g1->GetMaximum());
 
     c1->cd(2);
     construct_graph_min(tg_diff, "graph_2", "threshold", "Difference", 2900, 3700);
