@@ -2,72 +2,131 @@
 #include "TCanvas.h"
 #include "TGraph.h"
 
+//one line method of constructing a graph and settings title / axis values.. will change graph passed to it as argument..
 void construct_graph(TGraph *g1, const char *title, const char *x_axis, const char *y_axis, int x_min, int x_max)
 {
     g1->SetName(title);
-    g1->SetMarkerColor(kRed);
-    // g1->SetMaximum(100000);
-    // g1->SetMinimum(0);
+    g1->SetMarkerColor(39);
+    g1->SetMaximum(80000);
+    g1->SetMinimum(0);
     g1->GetXaxis()->SetTitle(x_axis);
     g1->GetYaxis()->SetTitle(y_axis);
-    g1->SetFillColor(40);
+    g1->SetFillColor(38);
     g1->GetXaxis()->CenterTitle();
     g1->GetYaxis()->CenterTitle();
     g1->GetXaxis()->SetRangeUser(x_min, x_max);
     //g1->Draw("AB");
 }
-//used for creating a graph of difference between value and fit..
-void residual_fits(TGraph *tg, TF1 *fit, double_t x_min, double_t x_max, TGraph *tg_out, int* point)
+void construct_graph_min(TGraph *g1, const char *title, const char *x_axis, const char *y_axis, int x_min, int x_max)
+{
+    g1->SetName(title);
+    g1->SetMarkerColor(39);
+    g1->SetMaximum(80000);
+    g1->SetMinimum(-80000);
+    g1->GetXaxis()->SetTitle(x_axis);
+    g1->GetYaxis()->SetTitle(y_axis);
+    g1->SetFillColor(38);
+    g1->GetXaxis()->CenterTitle();
+    g1->GetYaxis()->CenterTitle();
+    g1->GetXaxis()->SetRangeUser(x_min, x_max);
+    //g1->Draw("AB");
+}
+
+const char *make_constChar(double_t type)
+{
+    TString name;
+    name.Form("%f", type);
+    return name.Data();
+}
+
+pair<double_t, double_t> find_max(vector<pair<double_t, double_t>> xy_points){
+
+    double_t max_y(0);
+    double_t x_point(0);
+
+    for(auto c : xy_points){
+        if (c.second > max_y) {
+            max_y = c.second;
+            x_point = c.first;
+        }
+    }
+    return make_pair(x_point, max_y);
+}
+
+//this determines what information you get from each individual fit from iterate fits..
+pair<double_t, double_t> residual_fits(TGraph *tg, TF1 *fit, double_t x_min, double_t x_max, TGraph *tg_out, int *point)
 {
     double *x_points = tg->GetX();
     double *y_points = tg->GetY();
     double_t difference(0);
 
+    vector<pair< double_t, double_t>> exceed_thresh;
+
     for (int i = 0; i < tg->GetN(); i++)
     {
         difference = y_points[i] - fit->Eval(x_points[i]);
-        if (difference != 0 and x_points[i] > x_min and x_points[i] < x_max)
+        if (difference != 0 and x_points[i] > x_min and x_points[i] < x_max) //make sure that you're only looking in the assigned range..
         {
-            cout << "thresh: " << x_points[i] << "\tdiff:" << difference
-                 << "\tfit value: " << fit->Eval(x_points[i])
-                 << "\tval: " << y_points[i]
-                 << "\t point is: " << *point << endl;
+            // //uncomment to check values of threshold and points at different locations..
+            // cout << "thresh: " << x_points[i] << "\tdiff:" << difference
+            //      << "\tfit value: " << fit->Eval(x_points[i])
+            //      << "\tval: " << y_points[i]
+            //      << "\t point is: " << *point << endl;
             tg_out->SetPoint(++(*point), x_points[i], difference);
+
+            if (difference > 2000 or difference < -2000)
+            {
+                exceed_thresh.push_back(make_pair(x_points[i],y_points[i]));
+            }
         }
     }
+    pair<double_t, double_t> max_diff = find_max(exceed_thresh);
+    return max_diff;
 }
 
-void iterate_fit(TGraph *tg, double_t x_min, double_t x_max, int num_fits, TGraph *tg_out, int* point)
+//defines the range of the total fits, number of total fits, and the fitting function
+pair<double_t,double_t> iterate_fit(TGraph *tg, double_t x_min, double_t x_max, int num_fits, TGraph *tg_out, int *point)
 {
+    //select choice of fitting function here..
+    TF1 *my_func = new TF1("my_func", "expo");
 
-    TF1 *my_func = new TF1("my_func", "pol3");
-
-    double_t width = (x_max - x_min) / num_fits;
+    double_t width = (x_max - x_min) / num_fits; //define the width of where the fit will be.
     //previous parameters to guess for fits (avoid explosive fits)
     double_t prev_p0, prev_p1, prev_p2, prev_p3;
+    vector<pair<double_t, double_t>> thresholds_xy;
+
     for (int i = 0; i < num_fits; ++i)
     {
         // set the min and max values for this iteration..
         double_t x_min_p = x_min + (width * i);
         double_t x_max_p = x_min + (width * (i + 1));
 
-        my_func->SetParameter("p0", prev_p0);
-        my_func->SetParameter("p1", prev_p1);
-        my_func->SetParameter("p2", prev_p2);
-        my_func->SetParameter("p3", prev_p3);
+        // my_func->SetParameter("p0", prev_p0);
+        // my_func->SetParameter("p1", prev_p1);
+        // my_func->SetParameter("p2", prev_p2);
+        // my_func->SetParameter("p3", prev_p3);
+
+        //expo fit parameters..
+        my_func->SetParameter("Constant", prev_p0);
+        my_func->SetParameter("Slope", prev_p1);
 
         tg->Fit(my_func, "QW", "L", x_min_p, x_max_p);
-        residual_fits(tg, my_func, x_min_p, x_max_p, tg_out, point);
+        thresholds_xy.push_back(residual_fits(tg, my_func, x_min_p, x_max_p, tg_out, point));
 
-        prev_p0 = my_func->GetParameter("p0");
-        prev_p1 = my_func->GetParameter("p1");
-        prev_p2 = my_func->GetParameter("p2");
-        prev_p3 = my_func->GetParameter("p3");
+        // prev_p0 = my_func->GetParameter("p0");
+        // prev_p1 = my_func->GetParameter("p1");
+        // prev_p2 = my_func->GetParameter("p2");
+        // prev_p3 = my_func->GetParameter("p3");
+
+        prev_p0 = my_func->GetParameter("Constant");
+        prev_p1 = my_func->GetParameter("Slope");
     }
+    
+    pair<double_t, double_t> max_diff = find_max(thresholds_xy);
+    return max_diff;
 }
 
-void fill_hist_from_file(const char *file)
-{
+void fill_hist_from_file(const char *file)\. q                          1
     TFile *f = new TFile(file);
     TNtuple *ntup1 = (TNtuple *)f->Get("ntup1");
 
@@ -82,7 +141,9 @@ void fill_hist_from_file(const char *file)
     //create a new graph object
     TGraph *g1 = new TGraph();
     TGraph *g2 = new TGraph();
+
     int point(0);
+    vector<pair<Double_t, double_t>> max_thresh_slope;
 
     for (int i = 0; i < ntup1->GetEntries(); ++i)
     {
@@ -92,6 +153,7 @@ void fill_hist_from_file(const char *file)
         g1->SetPoint(point, Thresh, Scalar);
         g2->SetPoint(point, Thresh, slope);
         Prev_Scalar = Scalar;
+        max_thresh_slope.push_back(make_pair(Thresh,slope));
     }
 
     // // get the x and y points of the graph that you want
@@ -105,30 +167,55 @@ void fill_hist_from_file(const char *file)
     //     hist1->Fill(x_points[i], y_points[i]);
     // }
 
-    int point2(0);
+    int point2(0), threshold;
     TGraph *tg_diff = new TGraph();
-    iterate_fit(g1, 3000, 3500, 20, tg_diff, &point2);
+    pair<Double_t, double_t> threshold_xy;
 
-    TCanvas *c1 = new TCanvas("c1", "Canvas name", 1400, 600);
+    threshold_xy = iterate_fit(g1, 2900, 3600, 24, tg_diff, &point2);
+
+    TCanvas *c1 = new TCanvas("c1", "Canvas name", 2100, 600);
     gStyle->SetOptStat(1111111); // draws statistics on the plots
-    gStyle->SetOptFit(1);     //includes a fit on the graph
+    gStyle->SetOptFit(1);
     gStyle->SetPalette(57);
-    c1->Divide(2, 1);
+
+    c1->Divide(3, 1);
     c1->cd(1);
+    gStyle->SetStatX(0.5);
+    gStyle->SetStatY(0.9);
     c1->GetPad(1)->SetLogy();
-    construct_graph(g1, "graph_1", "threshold", "Scalar_counts", 2900, 3600);
+    construct_graph(g1, "graph_1", "threshold", "Scalar_counts", 2900, 3700);
     g1->Draw("ABQ");
 
     c1->cd(2);
-    construct_graph(tg_diff, "graph_2", "threshold", "Difference", 2900, 3600);
-    tg_diff->Draw();
+    construct_graph_min(tg_diff, "graph_2", "threshold", "Difference", 2900, 3700);
+    tg_diff->Draw("APL");
+    TPaveText *labeA = new TPaveText(0.15, 0.70, 0.4, 0.79, "brNDC");
+    labeA->AddText(make_constChar(threshold_xy.first));
+    labeA->Draw();
+    TPaveText *labeB = new TPaveText(0.45, 0.70, 0.75, 0.79, "brNDC");
+    labeA->AddText(make_constChar(threshold_xy.second));
+    labeA->Draw();
+
+    c1->cd(3);
+    //c1->GetPad(3)->SetLogy();
+    construct_graph_min(g2, "graph_3", "threshold", "scalar point-slope", 2900, 3700);
+    g2->Draw("APL");
+    TPaveText *labeC = new TPaveText(0.15, 0.80, 0.4, 0.89, "brNDC");
+    labeC->AddText(make_constChar((find_max(max_thresh_slope).first)));
+    labeC->Draw();
+    TPaveText *labeD = new TPaveText(0.4, 0.80, 0.65, 0.89, "brNDC");
+    labeD->AddText(make_constChar((find_max(max_thresh_slope).second)));
+    labeD->Draw();
+    // TPaveText *labeB = new TPaveText(0.15, 0.70, 0.4, 0.79, "brNDC");
+    // labeB->AddText("Point-slope diff..");
+    // labeB->Draw();
 
     //create the file name you want, and of course root doesn't mak it easy..
     TString file_string = file;
     int size = file_string.Sizeof();
     file_string.Remove(size - 5, 4);
     file_string.Append("png");
-    const char* output_file = file_string;    
+    const char *output_file = file_string;
     c1->SaveAs(output_file);
 
     // //create a spline from the graph..
