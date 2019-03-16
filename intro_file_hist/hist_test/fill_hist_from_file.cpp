@@ -314,7 +314,7 @@ void fill_hist_from_file(const char *file)
       mg->Add(g0);
       mg->Add(g1);
       mg->SetTitle("Noise and Source Scan; Threshold; Scaler Count");
-      mg->GetXaxis()->SetRangeUser(2900,3700);
+      //mg->GetXaxis()->SetRangeUser(2900,3700);
       mg->Draw("ABQ");
 
       TLine *tl = new TLine();
