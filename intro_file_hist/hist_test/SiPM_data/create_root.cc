@@ -5,8 +5,8 @@ void create_root(const char * file){
     
     //use this to define any ntuple you want and to parse it's data directly from an ASCII file
     //name, title, columns of information or branches for the Ntuple..
-    TNtuple ntup0("ntup0", "ntup0", "Thresh:Scalar:Channel");
-    ntup0.ReadFile(file);
+    TNtuple ntup1("ntup1", "ntup1", "DSP_Card:DSP_Chan:Reg:Thresh:Scalar");
+    ntup1.ReadFile(file);
 
     TString file_string = file;
     int size = file_string.Sizeof();
@@ -17,7 +17,7 @@ void create_root(const char * file){
     //create and save your own rootfile from this text:
     TFile *f = new TFile (output_file, "RECREATE");
     f->cd();
-    ntup0.Write();
+    ntup1.Write();
     f->Close();
 
 }

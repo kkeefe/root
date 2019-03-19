@@ -8,7 +8,7 @@ void construct_graph(TGraph *g1, const char *title, const char *x_axis, const ch
 {
   g1->SetName(title);
   g1->SetMarkerColor(39);
-  g1->SetMaximum(80000);
+  g1->SetMaximum(70000);
   g1->SetMinimum(0);
   // g1->GetXaxis()->SetTitle(x_axis);
   // g1->GetYaxis()->SetTitle(y_axis);
@@ -23,8 +23,8 @@ void construct_graph_min(TGraph *g1, const char *title, const char *x_axis, cons
 {
   g1->SetName(title);
   g1->SetMarkerColor(39);
-  g1->SetMaximum(80000);
-  g1->SetMinimum(-80000);
+  g1->SetMaximum(70000);
+  g1->SetMinimum(-70000);
   g1->GetXaxis()->SetTitle(x_axis);
   g1->GetYaxis()->SetTitle(y_axis);
   g1->SetFillColor(38);
@@ -40,6 +40,13 @@ const char *make_constChar(double_t type)
   name.Form("%f", type);
   return name.Data();
 }
+const char *make_constChar(int type) //overload this bad boy to accept ints..
+{
+  TString name;
+  name.Form("%i", type);
+  return name.Data();
+}
+
 // find the pair with the largest second abs_value..
 pair<double_t, double_t> find_max(vector<pair<double_t, double_t>> xy_points)
 {
@@ -57,7 +64,7 @@ pair<double_t, double_t> find_max(vector<pair<double_t, double_t>> xy_points)
   }
   return make_pair(x_point, max_y);
 }
-
+//main function used in determining an acceptable slope / difference value..
 pair<double_t, double_t> find_thresh_and_diff_of_tg_diff(TGraph *tg, double_t thresh_val)
 {
 
@@ -135,12 +142,15 @@ void iterate_fit(TGraph *tg, double_t x_min, double_t x_max, int num_fits, TGrap
   }
 }
 
-set<int> Register_Set = 
- {111, 113, 115, 109, 85, 117, 119, 121, 112, 114, 116, 77, 124, 118, 120, 122, 110, 82, 80, 79, 89, 87, 90, 92, 83, 78, 81, 84, 88, 86, 91, 123, 19, 47, 49, 48, 58, 56, 54, 59, 46, 51, 50, 45, 57, 55, 53, 22, 18, 16, 14, 20, 60, 28, 26, 24, 17, 15, 13, 52, 21, 27, 25, 23};
+// set<int> Register_Set =
+//     {111, 113, 115, 109, 85, 117, 119, 121, 112, 114, 116, 77, 124, 118, 120, 122, 110, 82, 80, 79, 89, 87, 90, 92, 83, 78, 81, 84, 88, 86, 91, 123, 19, 47, 49, 48, 58, 56, 54, 59, 46, 51, 50, 45, 57, 55, 53, 22, 18, 16, 14, 20, 60, 28, 26, 24, 17, 15, 13, 52, 21, 27, 25, 23};
+
+set<int> Register_Set =
+    {59};
 
 // need to convert register information from the Lyso data to the noise measurement on the chanell..
 // KEEP IN MIND that channel here actually refers to the pixel number minus 1!!
-int conv_Reg(int reg_val)
+int conv_Reg_to_pixel(int reg_val)
 {
   map<int, int> conv_reg_to_pixel = {
       {111, 1},
@@ -212,9 +222,79 @@ int conv_Reg(int reg_val)
   return pixel - 1;
 }
 
+int conv_Reg_to_Ch(int reg_val)
+{
+  map<int, int> reg_to_channel = {
+      {111, 99},
+      {113, 101},
+      {115, 103},
+      {109, 97},
+      {85, 73},
+      {117, 105},
+      {119, 107},
+      {121, 109},
+      {112, 100},
+      {114, 102},
+      {116, 104},
+      {77, 65},
+      {124, 112},
+      {118, 106},
+      {120, 108},
+      {122, 110},
+      {110, 98},
+      {82, 70},
+      {80, 68},
+      {79, 67},
+      {89, 77},
+      {87, 75},
+      {90, 78},
+      {92, 80},
+      {83, 71},
+      {78, 66},
+      {81, 69},
+      {84, 72},
+      {88, 76},
+      {86, 74},
+      {91, 79},
+      {123, 111},
+      {19, 7},
+      {47, 35},
+      {49, 37},
+      {48, 36},
+      {58, 46},
+      {56, 44},
+      {54, 42},
+      {59, 47},
+      {46, 34},
+      {51, 39},
+      {50, 38},
+      {45, 33},
+      {57, 45},
+      {55, 43},
+      {53, 41},
+      {22, 10},
+      {18, 6},
+      {16, 4},
+      {14, 2},
+      {20, 8},
+      {60, 48},
+      {28, 16},
+      {26, 14},
+      {24, 12},
+      {17, 5},
+      {15, 3},
+      {13, 1},
+      {52, 40},
+      {21, 9},
+      {27, 15},
+      {25, 13},
+      {23, 11}};
+  int channel;
+  return reg_to_channel.at(reg_val);
+}
+
 void fill_hist_from_file(const char *file)
 {
-
   TFile *f = new TFile(file);
   TNtuple *ntup0 = (TNtuple *)f->Get("ntup0"); // ntup without the data - 3 elements..
   TNtuple *ntup1 = (TNtuple *)f->Get("ntup1"); // ntup with the data - 5 elements
@@ -232,18 +312,21 @@ void fill_hist_from_file(const char *file)
   ntup0->SetBranchAddress("Scalar", &Scalar0);
   ntup0->SetBranchAddress("Channel", &Channel);
 
+  TString output_fileS = file;
+  int size = output_fileS.Sizeof();
+  output_fileS.Remove(size - 5, 4);
+  output_fileS.Append("txt"); //make a .txt file to store these bad boys..
+  const char *output_txt_name = output_fileS;
+  ofstream output_txt(output_txt_name);
+
   //define register iteration here..
-  const int max_register(125);
-  //for (int Reg_I_Want = 13; Reg_I_Want < max_register; Reg_I_Want++)
-  for (int Reg_I_Want : Register_Set)
+  for (int Reg_I_Want : Register_Set) //range for loop to look over every member of the set of used registers..
   {
-
-    cout << "looking for: " << Reg_I_Want << endl;
+    cout << "looking for register: " << Reg_I_Want << ", at channel: " << conv_Reg_to_Ch(Reg_I_Want) << endl;
     //create a new graph object
-    TGraph *g1 = new TGraph();
-    TGraph *g2 = new TGraph();
-
     TGraph *g0 = new TGraph(); // to be used for the "no - src" ntuple runs..
+    TGraph *g1 = new TGraph(); // standard fill graph
+    TGraph *g2 = new TGraph(); // point to point slope calculation graph..
 
     int point(0);
     int point0(0);
@@ -257,20 +340,21 @@ void fill_hist_from_file(const char *file)
       {
         point++;
         double slope = Scalar - Prev_Scalar;
-        g1->SetPoint(point, Thresh, Scalar);
+        g1->SetPoint(point, Thresh, Scalar); // fill the graphs..
         g2->SetPoint(point, Thresh, slope);
         Prev_Scalar = Scalar;
         max_thresh_slope.push_back(make_pair(Thresh, slope));
-        fill = true;
+        fill = true; //ensures you found the element you want,
       }
     }
 
-    cout << "Thresh0 " << Thresh0 << "\t point0: " << point0 << "\t Scalar0: " << Scalar0 << endl;
+    //cout << "Thresh0 " << Thresh0 << "\t point0: " << point0 << "\t Scalar0: " << Scalar0 << endl;
     //set a fill method for ntup0
     for (int i = 0; i < ntup0->GetEntries(); i++)
     {
-      ntup0->GetEntry(i);
-      if (Channel == conv_Reg(Reg) and fill)
+      ntup0->GetEntry(i); //check every channel but only fill for the registers you want..
+      // if (Channel == conv_Reg(Reg) and fill)
+      if (Channel == conv_Reg_to_Ch(Reg_I_Want) - 1) //channels in the noise are offset by value 1............
       {
         point0++;
         g0->SetPoint(point0, Thresh0, Scalar0);
@@ -286,35 +370,30 @@ void fill_hist_from_file(const char *file)
       TGraph *tg_diff = new TGraph();
       //this method fills the tg_diff graph..
       iterate_fit(g1, 2900, 3700, 48, tg_diff, &point2);
-      pair<Double_t, double_t> threshold_xy, slope_diff_xy;
+      pair<Double_t, double_t> threshold_xy, slope_diff_xy, slope_noise;
       double_t threshold_val(550); //define a threshold value to look for in the difference graph..
       threshold_xy = find_thresh_and_diff_of_tg_diff(tg_diff, threshold_val);
       slope_diff_xy = find_thresh_and_diff_of_tg_diff(g2, threshold_val);
+      slope_noise = find_thresh_and_diff_of_tg_diff(g0, threshold_val);
 
       TCanvas *c1 = new TCanvas("c1", "Canvas name", 2100, 600);
-      // gStyle->SetOptStat(1111111); // draws statistics on the plots
-      // gStyle->SetOptFit(1);
-      // gStyle->SetPalette(57);
 
       c1->Divide(3, 1);
       c1->cd(1);
-      // gStyle->SetStatX(0.5);
-      // gStyle->SetStatY(0.9);
-      c1->GetPad(1)->SetLogy();
       construct_graph(g1, "graph_1", "threshold", "Scalar_counts", 2900, 3700);
       construct_graph(g0, "graph_0", "threshold", "Scalar_counts", 2900, 3700);
-      // g0->SetTitle("Noise_data");
-      // g1->SetTitle("Source_data");
+      g0->SetTitle("Noise_data");
+      g1->SetTitle("Source_data");
+      c1->GetPad(1)->SetLogy();
       g0->SetFillColor(40);
       g1->SetFillColor(38);
-      // g1->Draw("ABQ");
 
       TMultiGraph *mg = new TMultiGraph("mg1", "Source and Noise");
       mg->SetTitle("Scaler Threshold Scans");
       mg->Add(g0);
       mg->Add(g1);
       mg->SetTitle("Noise and Source Scan; Threshold; Scaler Count");
-      //mg->GetXaxis()->SetRangeUser(2900,3700);
+      //mg->GetXaxis()->SetRangeUser(584,678); //why doesn't this set the range like it does for construct_graph??
       mg->Draw("ABQ");
 
       TLine *tl = new TLine();
@@ -328,10 +407,29 @@ void fill_hist_from_file(const char *file)
       tl2->SetLineWidth(2);
       tl2->SetLineStyle(8);
       tl2->DrawLine(slope_diff_xy.first, g1->GetMinimum(), slope_diff_xy.first, g1->GetMaximum());
+
+      TLine *tl3 = new TLine();
+      tl3->SetLineColor(kBlack);
+      tl3->SetLineWidth(2);
+      tl3->SetLineStyle(7);
+      tl3->DrawLine(slope_noise.first, g1->GetMinimum(), slope_noise.first, g1->GetMaximum());
+
       TPaveText *labeA0 = new TPaveText(0.15, 0.20, 0.4, 0.29, "brNDC");
-      labeA0->AddText(make_constChar(conv_Reg(Reg_I_Want)+1));
+      labeA0->AddText(make_constChar(conv_Reg_to_pixel(Reg_I_Want) + 1));
       labeA0->Draw();
 
+      TPaveText *labeA1 = new TPaveText(0.15, 0.30, 0.4, 0.39, "brNDC");
+      labeA1->AddText(make_constChar((slope_noise.first - slope_diff_xy.first)));
+      labeA1->Draw();
+
+      TLegend *legend = new TLegend(.15, .65, .4, .9, "");
+      legend->SetFillColor(0);
+      legend->AddEntry(g0, "noise");
+      legend->AddEntry(g1, "Source");
+      legend->AddEntry(tl, "Gaus Fit");
+      legend->AddEntry(tl2, "Linear Fit");
+      legend->AddEntry(tl3, "Point-slope Fit");
+      legend->DrawClone("Same");
 
       c1->cd(2);
       construct_graph_min(tg_diff, "graph_2", "threshold", "Difference", 2900, 3700);
@@ -343,7 +441,7 @@ void fill_hist_from_file(const char *file)
       labeB->AddText(make_constChar(threshold_xy.second));
       labeB->Draw();
       TPaveText *labeB2 = new TPaveText(0.15, 0.20, 0.4, 0.29, "brNDC");
-      labeB2->AddText("gaus-fits");
+      labeB2->AddText("gaus-fit");
       labeB2->Draw();
       tl->DrawLine(threshold_xy.first, tg_diff->GetMinimum(), threshold_xy.first, tg_diff->GetMaximum());
 
@@ -362,17 +460,23 @@ void fill_hist_from_file(const char *file)
       tl2->DrawLine(slope_diff_xy.first, g2->GetMinimum(), slope_diff_xy.first, g2->GetMaximum());
 
       //begin saving the file stuff you want to save..
-      string file_name("_Channel_SiPM.txt");
-      string count = std::to_string((conv_Reg(Reg_I_Want) + 1));
+      string file_name(file);
+      string count = std::to_string((conv_Reg_to_pixel(Reg_I_Want) + 1));
       file_name = count + file_name;
 
       //create the file name you want, and of course root doesn't mak it easy..
       TString file_string = file_name;
       int size = file_string.Sizeof();
       file_string.Remove(size - 5, 4);
-      file_string.Append(".png");
+      file_string.Append("png");
       const char *output_file = file_string;
       c1->SaveAs(output_file);
+
+      //format of output file is: pixel# / Gaus_threshold / Gaus_difference / linear_threshold / linear_difference / noise_threshold from linear fit
+      output_txt << (conv_Reg_to_pixel(Reg_I_Want) + 1) << "\t" << threshold_xy.first << "\t" << threshold_xy.second << "\t"
+                 << slope_diff_xy.first << "\t" << slope_diff_xy.second
+                 << "\t" << slope_noise.first << endl;
     }
   }
+  output_txt.close(); //make sure this puppy is outside of that for loop, file will be rewritten every time..
 }
