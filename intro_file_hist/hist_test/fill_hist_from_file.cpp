@@ -142,11 +142,11 @@ void iterate_fit(TGraph *tg, double_t x_min, double_t x_max, int num_fits, TGrap
   }
 }
 
-// set<int> Register_Set =
-//     {111, 113, 115, 109, 85, 117, 119, 121, 112, 114, 116, 77, 124, 118, 120, 122, 110, 82, 80, 79, 89, 87, 90, 92, 83, 78, 81, 84, 88, 86, 91, 123, 19, 47, 49, 48, 58, 56, 54, 59, 46, 51, 50, 45, 57, 55, 53, 22, 18, 16, 14, 20, 60, 28, 26, 24, 17, 15, 13, 52, 21, 27, 25, 23};
-
 set<int> Register_Set =
-    {59};
+    {111, 113, 115, 109, 85, 117, 119, 121, 112, 114, 116, 77, 124, 118, 120, 122, 110, 82, 80, 79, 89, 87, 90, 92, 83, 78, 81, 84, 88, 86, 91, 123, 19, 47, 49, 48, 58, 56, 54, 59, 46, 51, 50, 45, 57, 55, 53, 22, 18, 16, 14, 20, 60, 28, 26, 24, 17, 15, 13, 52, 21, 27, 25, 23};
+
+// set<int> Register_Set =
+//     {56};
 
 // need to convert register information from the Lyso data to the noise measurement on the chanell..
 // KEEP IN MIND that channel here actually refers to the pixel number minus 1!!
@@ -322,7 +322,10 @@ void fill_hist_from_file(const char *file)
   //define register iteration here..
   for (int Reg_I_Want : Register_Set) //range for loop to look over every member of the set of used registers..
   {
-    cout << "looking for register: " << Reg_I_Want << ", at channel: " << conv_Reg_to_Ch(Reg_I_Want) << endl;
+    cout << "looking for register: " << Reg_I_Want
+         << ", at channel: " << conv_Reg_to_Ch(Reg_I_Want)
+         << ", pixel: " << conv_Reg_to_pixel(Reg_I_Want) + 1 << endl; //remember tht pixels were offset by 1...
+    
     //create a new graph object
     TGraph *g0 = new TGraph(); // to be used for the "no - src" ntuple runs..
     TGraph *g1 = new TGraph(); // standard fill graph
@@ -369,9 +372,9 @@ void fill_hist_from_file(const char *file)
       cout << "found a fill at: " << Reg_I_Want << endl;
       TGraph *tg_diff = new TGraph();
       //this method fills the tg_diff graph..
-      iterate_fit(g1, 2900, 3700, 48, tg_diff, &point2);
+      iterate_fit(g1, 2900, 3700, 96, tg_diff, &point2);
       pair<Double_t, double_t> threshold_xy, slope_diff_xy, slope_noise;
-      double_t threshold_val(550); //define a threshold value to look for in the difference graph..
+      double_t threshold_val(250); //define a threshold value to look for in the difference graph..
       threshold_xy = find_thresh_and_diff_of_tg_diff(tg_diff, threshold_val);
       slope_diff_xy = find_thresh_and_diff_of_tg_diff(g2, threshold_val);
       slope_noise = find_thresh_and_diff_of_tg_diff(g0, threshold_val);
@@ -464,7 +467,7 @@ void fill_hist_from_file(const char *file)
       string count = std::to_string((conv_Reg_to_pixel(Reg_I_Want) + 1));
       file_name = count + file_name;
 
-      //create the file name you want, and of course root doesn't mak it easy..
+      //create the file name you want, and of course root doesn't mak it easy.
       TString file_string = file_name;
       int size = file_string.Sizeof();
       file_string.Remove(size - 5, 4);
