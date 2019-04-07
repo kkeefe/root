@@ -12,4 +12,5 @@ book_sales
 
 #ignore anything in stupid vscode dir..
 .vscode/
+.vscode/ipch*
 .vsode/**/

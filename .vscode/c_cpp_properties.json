@@ -1,10 +1,9 @@
 {
     "configurations": [
         {
-            "name": "Win32",
+            "name": "Mac",
             "includePath": [
                 "${workspaceFolder}",
-                "C:/MinGW/lib/gcc/mingw32/8.2.0/include/ssp",
                 "/Users/kevinkeefe/Documents/root_build/include"
             ],
             "defines": [
@@ -12,16 +11,19 @@
                 "UNICODE",
                 "_UNICODE"
             ],
-            "compilerPath": "C:\\mingw-w64\\bin\\gcc.exe",
-            "intelliSenseMode": "msvc-x64",
+            "compilerPath": "/usr/bin/clang",
+            "intelliSenseMode": "clang-x64",
             "browse": {
                 "path": [
-                    "${workspaceFolder}",
-                    "C:\\MinGW\\lib\\gcc\\mingw32\\8.2.0\\include\\c++"
+                    "${workspaceFolder}"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
             },
+            "macFrameworkPath": [
+                "/System/Library/Frameworks",
+                "/Library/Frameworks"
+            ],
             "cStandard": "c11",
             "cppStandard": "c++17"
         }
