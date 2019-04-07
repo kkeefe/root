@@ -4,7 +4,8 @@
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}",
-                "/Users/kevinkeefe/Documents/root_build/include"
+                "/Users/kevinkeefe/Documents/root_build/include",
+                "/Library/Developer/CommandLineTools/usr/include/c++/v1"
             ],
             "defines": [
                 "_DEBUG",
