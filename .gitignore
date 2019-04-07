@@ -1,10 +1,15 @@
-# ignore new temp files created by emacs
-*~
+*.h
 *.dSYM
-#ignore the data types in these files. this directory tree is only for analysis files..
-*.txt
-!2018_10_31_dt_calib.txt
-*.dat
-*.root
+*~
 *.png
-!Root_Color_Pallet.png
+*.root
+*.txt
+
+iterm/
+book_sales
+.DS_Store/
+**/FunctionFiles/
+
+#ignore anything in stupid vscode dir..
+.vscode/
+.vsode/**/

@@ -474,7 +474,7 @@ void fill_hist_from_file(const char *file)
       // tl2->DrawLine(slope_diff_xy.first, g2->GetMinimum(), slope_diff_xy.first, g2->GetMaximum());
 
       c1->cd(3);
-      //construct_graph(fit_graph, "graph_fit", "threshold", "constant_value", 3050, 3450);
+      //construct_graph(fit_graph, "graph_fit", "threshold", "constant_value", 3050, 3450)∏;
       fit_graph->SetFillColor(kGreen);
       fit_graph->SetTitle("fit_graph");
       fit_graph->GetXaxis()->SetTitle("threshold");
