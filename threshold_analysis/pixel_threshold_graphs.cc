@@ -143,7 +143,7 @@ void pixel_threshold_graphs(const char *file)
     tl4->SetLineWidth(1);
     tl4->SetLineStyle(10);
     tl4->DrawLine(0, find_mean(graph_noise_thresh), 70, find_mean(graph_noise_thresh));
-    
+
     TPaveText *labeA4 = new TPaveText(0.15, 0.20, 0.4, 0.29, "brNDC");
     labeA4->AddText(make_constChar(find_mean(graph_noise_thresh)));
     labeA4->Draw();
@@ -161,7 +161,7 @@ void pixel_threshold_graphs(const char *file)
     tl5->SetLineWidth(1);
     tl5->SetLineStyle(10);
     tl5->DrawLine(0, find_mean(graph_gaus_fromNoise), 70, find_mean(graph_gaus_fromNoise));
-    
+
     TPaveText *labeA5 = new TPaveText(0.15, 0.20, 0.4, 0.29, "brNDC");
     labeA5->AddText(make_constChar(find_mean(graph_gaus_fromNoise)));
     labeA5->Draw();
@@ -172,13 +172,13 @@ void pixel_threshold_graphs(const char *file)
     c6->cd(1);
     graph_lin_fromNoise->SetMinimum(-50);
     construct_graph(graph_lin_fromNoise, "Linear from Noise", "pixel_number", "Linear - Noise", 36, 50);
-    
+
     TLine *tl6 = new TLine();
     tl6->SetLineColor(kBlack);
     tl6->SetLineWidth(1);
     tl6->SetLineStyle(10);
     tl6->DrawLine(0, find_mean(graph_lin_fromNoise), 70, find_mean(graph_lin_fromNoise));
-    
+
     TPaveText *labeA6 = new TPaveText(0.15, 0.20, 0.4, 0.29, "brNDC");
     labeA6->AddText(make_constChar(find_mean(graph_lin_fromNoise)));
     labeA6->Draw();
